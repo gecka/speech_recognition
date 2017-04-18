@@ -1007,7 +1007,7 @@ class Recognizer(AudioSource):
             raise UnknownValueError()
         return result['Disambiguation']['ChoiceData'][0]['Transcription']
 
-    def recognize_ibm(self, audio_data, username, password, language="en-US", show_all=False, domain="stream.watsonplatform.net"):
+    def recognize_ibm(self, audio_data, username, password, language="en-US", show_all=False, domain="stream.watsonplatform.net", timestamps=False):
         """
         Performs speech recognition on ``audio_data`` (an ``AudioData`` instance), using the IBM Speech to Text API.
 
@@ -1031,6 +1031,7 @@ class Recognizer(AudioSource):
             "profanity_filter": "false",
             "continuous": "true",
             "model": "{}_BroadbandModel".format(language),
+            "timestamps": "true" if timestamps else "false",
         }))
         request = Request(url, data=flac_data, headers={
             "Content-Type": "audio/x-flac",
