@@ -732,6 +732,7 @@ class Recognizer(AudioSource):
             "key": key,
         }))
         request = Request(url, data=flac_data, headers={"Content-Type": "audio/x-flac; rate={}".format(audio_data.sample_rate)})
+        request.add_header("Content-length", len(request.data))
 
         # obtain audio transcription results
         try:
@@ -853,6 +854,7 @@ class Recognizer(AudioSource):
         )
         url = "https://api.wit.ai/speech?v=20160526"
         request = Request(url, data=wav_data, headers={"Authorization": "Bearer {}".format(key), "Content-Type": "audio/wav"})
+        request.add_header("Content-length", len(request.data))
         try:
             response = urlopen(request, timeout=self.operation_timeout)
         except HTTPError as e:
@@ -940,6 +942,7 @@ class Recognizer(AudioSource):
             "Authorization": "Bearer {}".format(access_token),
             "Content-Type": "audio/wav; samplerate=16000; sourcerate={}; trustsourcerate=true".format(audio_data.sample_rate),
         })
+        request.add_header("Content-length", len(request.data))
         try:
             response = urlopen(request, timeout=self.operation_timeout)
         except HTTPError as e:
@@ -992,6 +995,7 @@ class Recognizer(AudioSource):
             "Hound-Request-Authentication": "{};{}".format(user_id, request_id),
             "Hound-Client-Authentication": "{};{};{}".format(client_id, request_time, request_signature)
         })
+        request.add_header("Content-length", len(request.data))
         try:
             response = urlopen(request, timeout=self.operation_timeout)
         except HTTPError as e:
@@ -1039,6 +1043,7 @@ class Recognizer(AudioSource):
         })
         authorization_value = base64.standard_b64encode("{}:{}".format(username, password).encode("utf-8")).decode("utf-8")
         request.add_header("Authorization", "Basic {}".format(authorization_value))
+        request.add_header("Content-length", len(request.data))
         try:
             response = urlopen(request, timeout=self.operation_timeout)
         except HTTPError as e:
